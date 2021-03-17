@@ -27695,9 +27695,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(lib_button.default, {
     type: "primary",
     htmlType: "submit"
-  }, "Update")))), /*#__PURE__*/React.createElement("div", {
-    className: "pd2y"
-  }, "RingCentral.com"));
+  }, "Update")))));
 }
 ;// CONCATENATED MODULE: ./src/client/app.js
 /**

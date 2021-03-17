@@ -148,7 +148,6 @@ export default function App () {
           </FormItem>
         </Form>
       </div>
-      <div className='pd2y'>RingCentral.com</div>
     </div>
   )
 }
