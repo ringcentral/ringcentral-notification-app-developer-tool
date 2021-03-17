@@ -2,6 +2,8 @@
 
 A tool to help developer to test notification integration for RingCentral app
 
+![ ](screenshots/s1.png)
+
 ## Use
 
 Just visit [https://ringcentral.github.io/ringcentral-notification-app-developer-tool](https://ringcentral.github.io/ringcentral-notification-app-developer-tool), fill in your app url and webhook url, the app will load just as in RingCentral app.
