@@ -32,6 +32,10 @@ npm run c
 npm run gh
 ```
 
+## Links
+
+- [Framework to help creating notification apps](https://github.com/ringcentral/glip-integration-js)
+
 ## License
 
 MIT
