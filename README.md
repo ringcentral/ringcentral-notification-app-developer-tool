@@ -26,7 +26,7 @@ npm run c
 # Then visit http://127.0.0.1:6067 by default
 ```
 
-## build for github pages
+## Build for github pages
 
 ```sh
 npm run gh
