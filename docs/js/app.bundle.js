@@ -27604,8 +27604,21 @@ function App() {
 
   function setState(ext) {
     setter(old => {
-      return _objectSpread(_objectSpread({}, old), ext);
+      const up = _objectSpread(_objectSpread({}, old), ext);
+
+      if ('appUrl' in ext) {
+        updateUrl(up);
+      }
+
+      return up;
     });
+  }
+
+  function updateUrl(q) {
+    const url = `${window.rc.cdn}?frameName=${q.frameName}&webhook=${q.webhook}&appUrl=${q.appUrl}`;
+    window.history.pushState({
+      url
+    }, '', url);
   }
 
   async function submit() {
@@ -27695,7 +27708,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(lib_button.default, {
     type: "primary",
     htmlType: "submit"
-  }, "Update")))));
+  }, "Apply")))));
 }
 ;// CONCATENATED MODULE: ./src/client/app.js
 /**
