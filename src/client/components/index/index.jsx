@@ -40,11 +40,22 @@ export default function App () {
 
   function setState (ext) {
     setter(old => {
-      return {
+      const up = {
         ...old,
         ...ext
       }
+      if ('appUrl' in ext) {
+        updateUrl(up)
+      }
+      return up
     })
+  }
+
+  function updateUrl (q) {
+    const url = `${window.rc.cdn}?frameName=${q.frameName}&webhook=${q.webhook}&appUrl=${q.appUrl}`
+    window.history.pushState({
+      url
+    }, '', url)
   }
 
   async function submit () {
@@ -143,7 +154,7 @@ export default function App () {
               type='primary'
               htmlType='submit'
             >
-              Update
+              Apply
             </Button>
           </FormItem>
         </Form>

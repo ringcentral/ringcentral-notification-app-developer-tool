@@ -1,7 +1,7 @@
 {
   "name": "ringcentral-notification-app-developer-tool",
   "displayName": "RingCentral embeddable mobile",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "[Experimental] Android/IOS apps based on ringcentral-embeddable and cordova.",
   "main": "index.js",
   "scripts": {
