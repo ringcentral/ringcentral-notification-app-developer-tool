@@ -104,6 +104,7 @@ export default function App () {
           <Button
             disabled={!state.canSubmit}
             onClick={submit}
+            type='primary'
           >
             Submit
           </Button>

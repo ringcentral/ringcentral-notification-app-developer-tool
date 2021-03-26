@@ -27665,7 +27665,8 @@ function App() {
     className: "pd1y control"
   }, /*#__PURE__*/React.createElement(lib_button.default, {
     disabled: !state.canSubmit,
-    onClick: submit
+    onClick: submit,
+    type: "primary"
   }, "Submit"))), /*#__PURE__*/React.createElement("div", {
     className: "pd1y"
   }, /*#__PURE__*/React.createElement("h3", null, "Settings"), /*#__PURE__*/React.createElement(lib_form/* default */.Z, {
