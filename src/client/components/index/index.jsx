@@ -80,6 +80,7 @@ export default function App () {
   function initIframeEvents () {
     control.current = postMessage.create({
       contentWindow: document.getElementById('iframe').contentWindow,
+      timeout: 100000,
       targetOrigin: getOrigin(state.appUrl)
     })
     control.current.on(MESSAGE_CHANNEL.oauth, (data, ...args) => {
