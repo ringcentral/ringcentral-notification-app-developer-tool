@@ -34,7 +34,7 @@ npm run gh
 
 ## Links
 
-- [Framework to help creating notification apps](https://github.com/ringcentral/glip-integration-js)
+- [Framework to help creating notification apps](https://github.com/ringcentral/notification-app-js)
 - [Helper module to handle communication with RingCentral app](https://github.com/ringcentral/ringcentral-notification-integration-helper)
 
 ## License
