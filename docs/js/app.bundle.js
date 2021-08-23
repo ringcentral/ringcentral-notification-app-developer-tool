@@ -12273,6 +12273,54 @@ module.exports.insertCss = insertCss;
 
 /***/ }),
 
+/***/ 889:
+/***/ (function(module) {
+
+!function (e, t) {
+   true ? module.exports = t() : 0;
+}(this, function () {
+  return (() => {
+    "use strict";
+
+    var e = {
+      607: (e, t) => {
+        function o(e) {
+          if (null === e || "object" != typeof e) return e;
+
+          if (Array.isArray(e)) {
+            const t = new Array(e.length);
+            let r = t.length;
+
+            for (; r--;) t[r] = o(e[r]);
+
+            return t;
+          }
+
+          const t = {};
+
+          for (const r in e) t[r] = o(e[r]);
+
+          return t;
+        }
+
+        Object.defineProperty(t, "__esModule", {
+          value: !0
+        }), t.deepCopy = void 0, t.deepCopy = o, t.default = o;
+      }
+    },
+        t = {};
+    return function o(r) {
+      if (t[r]) return t[r].exports;
+      var n = t[r] = {
+        exports: {}
+      };
+      return e[r](n, n.exports, o), n.exports;
+    }(607);
+  })();
+});
+
+/***/ }),
+
 /***/ 9461:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -35011,7 +35059,7 @@ module.exports = ReactDOM;
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
@@ -35787,258 +35835,12 @@ var notification = __webpack_require__(4502);
 var select_style = __webpack_require__(710);
 // EXTERNAL MODULE: ./node_modules/antd/lib/select/index.js
 var lib_select = __webpack_require__(4384);
-;// CONCATENATED MODULE: ./src/client/components/index/login.jsx
-
-
-
-
-
-
-
-
-
-
-
-
-const {
-  SDK
-} = window.RingCentral;
-const sdk = new SDK({
-  server: window.rc.rcServer,
-  clientId: window.rc.clientId,
-  // clientSecret: 'yourClientSecret',
-  redirectUri: window.rc.redirect // optional, but is required for Implicit Grant and Authorization Code OAuth Flows (see below)
-
-});
-const lsKey = 'rc-platform';
-const {
-  Option
-} = lib_select/* default */.Z;
-class Login extends external_React_.Component {
-  constructor(...args) {
-    super(...args);
-
-    defineProperty_default()(this, "state", {
-      loading: false,
-      logined: false,
-      teams: [],
-      showTeamSelect: false
-    });
-
-    defineProperty_default()(this, "init", async () => {
-      const logined = await this.checkLogin();
-      this.setState({
-        logined
-      });
-    });
-
-    defineProperty_default()(this, "checkLogin", () => {
-      let token = window.localStorage.getItem(lsKey);
-
-      if (!token) {
-        return false;
-      }
-
-      try {
-        token = JSON.parse(token);
-      } catch (e) {
-        console.error('token parse failed', token);
-        return false;
-      }
-
-      sdk.platform().auth().setData(token);
-      return sdk.platform().auth().accessTokenValid();
-    });
-
-    defineProperty_default()(this, "login", () => {
-      const loginUrl = sdk.loginUrl();
-      sdk.loginWindow({
-        url: loginUrl
-      }).then(loginOptions => {
-        return sdk.login(loginOptions);
-      }).then(this.afterLogin).catch(this.loginError);
-    });
-
-    defineProperty_default()(this, "loginError", err => {
-      this.setState({
-        loading: false
-      });
-      console.error(err);
-
-      notification.default.error({
-        title: 'login failed',
-        description: err.message
-      });
-    });
-
-    defineProperty_default()(this, "afterLogin", () => {
-      this.setState({
-        logined: true
-      });
-      this.openTeamSelect();
-    });
-
-    defineProperty_default()(this, "handleLogout", () => {
-      sdk.logout().then(() => {
-        this.setState({
-          logined: false
-        });
-      });
-    });
-
-    defineProperty_default()(this, "getTeams", () => {
-      return sdk.send({
-        method: 'GET',
-        url: '/restapi/v1.0/glip/groups',
-        query: {
-          type: 'Team',
-          recordCount: 250
-        }
-      }).then(function (apiResponse) {
-        return apiResponse.json();
-      }).then(function (json) {
-        return json.records;
-      }).catch(function (e) {
-        if (e.response || e.request) {
-          const request = e.request;
-          const response = e.response;
-          console.log('API error ' + e.message + ' for URL' + request.url + ' ' + sdk.error(response));
-        }
-
-        this.setState({
-          loading: false
-        });
-
-        notification.default.error({
-          title: 'fetch teams data failed',
-          description: e.message
-        });
-      });
-    });
-
-    defineProperty_default()(this, "handleSelect", async id => {
-      this.setState({
-        showTeamSelect: false
-      });
-      const url = `/restapi/v1.0/glip/groups/${id}/webhooks`;
-      const uri = await sdk.send({
-        method: 'POST',
-        url
-      }).then(function (apiResponse) {
-        return apiResponse.json();
-      }).then(function (json) {
-        return json.uri;
-      }).catch(function (e) {
-        if (e.response || e.request) {
-          const request = e.request;
-          const response = e.response;
-          console.log('API error ' + e.message + ' for URL' + request.url + ' ' + sdk.error(response));
-        }
-
-        this.setState({
-          loading: false
-        });
-
-        notification.default.error({
-          title: 'create webhook uri failed',
-          description: e.message
-        });
-      });
-
-      if (!uri) {
-        return false;
-      }
-
-      this.setState({
-        loading: false
-      });
-      this.props.setWebhook(uri);
-    });
-
-    defineProperty_default()(this, "openTeamSelect", async () => {
-      const teams = await this.getTeams();
-      console.log('teams', teams);
-
-      if (!teams) {
-        return false;
-      }
-
-      this.setState({
-        teams,
-        showTeamSelect: true
-      });
-    });
-
-    defineProperty_default()(this, "handleClick", async () => {
-      this.setState({
-        loading: true
-      });
-      const logined = await this.checkLogin();
-
-      if (!logined) {
-        this.login();
-      } else {
-        this.openTeamSelect();
-      }
-    });
-  }
-
-  componentDidMount() {
-    this.init();
-  }
-
-  renderModal() {
-    const oprops = {
-      visible: this.state.showTeamSelect,
-      footer: null,
-      onCancel: () => null,
-      closable: false
-    };
-    const sprops = {
-      className: 'team-select',
-      placeholder: 'Please select a team',
-      onSelect: this.handleSelect,
-      showSearch: true,
-      optionFilterProp: 'children',
-      filterOption: (input, option) => {
-        return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-      }
-    };
-    return /*#__PURE__*/React.createElement(modal/* default */.Z, oprops, /*#__PURE__*/React.createElement(lib_select/* default */.Z, sprops, this.state.teams.map(t => {
-      return /*#__PURE__*/React.createElement(Option, {
-        value: t.id,
-        key: t.id
-      }, t.name);
-    })));
-  }
-
-  renderLogout() {
-    if (!this.state.logined) {
-      return null;
-    }
-
-    return /*#__PURE__*/React.createElement("span", {
-      className: "pointer mg1l",
-      onClick: this.handleLogout
-    }, "Logout");
-  }
-
-  render() {
-    return /*#__PURE__*/React.createElement("span", {
-      className: "mg1l"
-    }, /*#__PURE__*/React.createElement(tooltip.default, {
-      title: "After login you can select team and get a webhook url that can be used to test webhook"
-    }, /*#__PURE__*/React.createElement(lib_button.default, {
-      onClick: this.handleClick,
-      className: "mg1l",
-      loading: this.state.loading
-    }, "Get a webhookUrl")), this.renderLogout(), this.renderModal());
-  }
-
-}
-;// CONCATENATED MODULE: ./node_modules/@ant-design/icons-svg/es/asn/QuestionCircleOutlined.js
+// EXTERNAL MODULE: ./node_modules/json-deep-copy/dist/index.js
+var dist = __webpack_require__(889);
+var dist_default = /*#__PURE__*/__webpack_require__.n(dist);
+;// CONCATENATED MODULE: ./node_modules/@ant-design/icons-svg/es/asn/SettingOutlined.js
 // This icon file is generated automatically.
-var QuestionCircleOutlined = {
+var SettingOutlined = {
   "icon": {
     "tag": "svg",
     "attrs": {
@@ -36048,19 +35850,14 @@ var QuestionCircleOutlined = {
     "children": [{
       "tag": "path",
       "attrs": {
-        "d": "M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
-      }
-    }, {
-      "tag": "path",
-      "attrs": {
-        "d": "M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"
+        "d": "M924.8 625.7l-65.5-56c3.1-19 4.7-38.4 4.7-57.8s-1.6-38.8-4.7-57.8l65.5-56a32.03 32.03 0 009.3-35.2l-.9-2.6a443.74 443.74 0 00-79.7-137.9l-1.8-2.1a32.12 32.12 0 00-35.1-9.5l-81.3 28.9c-30-24.6-63.5-44-99.7-57.6l-15.7-85a32.05 32.05 0 00-25.8-25.7l-2.7-.5c-52.1-9.4-106.9-9.4-159 0l-2.7.5a32.05 32.05 0 00-25.8 25.7l-15.8 85.4a351.86 351.86 0 00-99 57.4l-81.9-29.1a32 32 0 00-35.1 9.5l-1.8 2.1a446.02 446.02 0 00-79.7 137.9l-.9 2.6c-4.5 12.5-.8 26.5 9.3 35.2l66.3 56.6c-3.1 18.8-4.6 38-4.6 57.1 0 19.2 1.5 38.4 4.6 57.1L99 625.5a32.03 32.03 0 00-9.3 35.2l.9 2.6c18.1 50.4 44.9 96.9 79.7 137.9l1.8 2.1a32.12 32.12 0 0035.1 9.5l81.9-29.1c29.8 24.5 63.1 43.9 99 57.4l15.8 85.4a32.05 32.05 0 0025.8 25.7l2.7.5a449.4 449.4 0 00159 0l2.7-.5a32.05 32.05 0 0025.8-25.7l15.7-85a350 350 0 0099.7-57.6l81.3 28.9a32 32 0 0035.1-9.5l1.8-2.1c34.8-41.1 61.6-87.5 79.7-137.9l.9-2.6c4.5-12.3.8-26.3-9.3-35zM788.3 465.9c2.5 15.1 3.8 30.6 3.8 46.1s-1.3 31-3.8 46.1l-6.6 40.1 74.7 63.9a370.03 370.03 0 01-42.6 73.6L721 702.8l-31.4 25.8c-23.9 19.6-50.5 35-79.3 45.8l-38.1 14.3-17.9 97a377.5 377.5 0 01-85 0l-17.9-97.2-37.8-14.5c-28.5-10.8-55-26.2-78.7-45.7l-31.4-25.9-93.4 33.2c-17-22.9-31.2-47.6-42.6-73.6l75.5-64.5-6.5-40c-2.4-14.9-3.7-30.3-3.7-45.5 0-15.3 1.2-30.6 3.7-45.5l6.5-40-75.5-64.5c11.3-26.1 25.6-50.7 42.6-73.6l93.4 33.2 31.4-25.9c23.7-19.5 50.2-34.9 78.7-45.7l37.9-14.3 17.9-97.2c28.1-3.2 56.8-3.2 85 0l17.9 97 38.1 14.3c28.7 10.8 55.4 26.2 79.3 45.8l31.4 25.8 92.8-32.9c17 22.9 31.2 47.6 42.6 73.6L781.8 426l6.5 39.9zM512 326c-97.2 0-176 78.8-176 176s78.8 176 176 176 176-78.8 176-176-78.8-176-176-176zm79.2 255.2A111.6 111.6 0 01512 614c-29.9 0-58-11.7-79.2-32.8A111.6 111.6 0 01400 502c0-29.9 11.7-58 32.8-79.2C454 401.6 482.1 390 512 390c29.9 0 58 11.6 79.2 32.8A111.6 111.6 0 01624 502c0 29.9-11.7 58-32.8 79.2z"
       }
     }]
   },
-  "name": "question-circle",
+  "name": "setting",
   "theme": "outlined"
 };
-/* harmony default export */ const asn_QuestionCircleOutlined = (QuestionCircleOutlined);
+/* harmony default export */ const asn_SettingOutlined = (SettingOutlined);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/slicedToArray.js + 1 modules
 var slicedToArray = __webpack_require__(857);
 // EXTERNAL MODULE: ./node_modules/@babel/runtime/helpers/esm/defineProperty.js
@@ -36323,6 +36120,453 @@ Icon.displayName = 'AntdIcon';
 Icon.getTwoToneColor = getTwoToneColor;
 Icon.setTwoToneColor = setTwoToneColor;
 /* harmony default export */ const AntdIcon = (Icon);
+;// CONCATENATED MODULE: ./node_modules/@ant-design/icons/es/icons/SettingOutlined.js
+// GENERATE BY ./scripts/generate.ts
+// DON NOT EDIT IT MANUALLY
+
+
+
+
+var SettingOutlined_SettingOutlined = function SettingOutlined(props, ref) {
+  return /*#__PURE__*/external_React_.createElement(AntdIcon, Object.assign({}, props, {
+    ref: ref,
+    icon: asn_SettingOutlined
+  }));
+};
+
+SettingOutlined_SettingOutlined.displayName = 'SettingOutlined';
+/* harmony default export */ const icons_SettingOutlined = (/*#__PURE__*/external_React_.forwardRef(SettingOutlined_SettingOutlined));
+;// CONCATENATED MODULE: ./src/client/components/index/setting.jsx
+
+
+
+
+
+
+
+
+
+const FormItem = lib_form/* default.Item */.Z.Item;
+function Setting(props) {
+  const [form] = lib_form/* default.useForm */.Z.useForm();
+
+  function handleFinish(res) {
+    props.onSubmit(res);
+  }
+
+  function reset() {
+    form.resetFields();
+  }
+
+  (0,external_React_.useEffect)(() => {
+    reset();
+  }, [props.setting]);
+  const rps = {
+    title: 'Custom setting',
+    visible: props.visible,
+    footer: null,
+    onCancel: () => null,
+    closable: false
+  };
+  return /*#__PURE__*/React.createElement(modal/* default */.Z, rps, /*#__PURE__*/React.createElement(lib_form/* default */.Z, {
+    form: form,
+    name: "setting-form",
+    onFinish: handleFinish,
+    initialValues: props.setting
+  }, /*#__PURE__*/React.createElement(FormItem, {
+    label: " API Server url",
+    key: "server",
+    rules: [{
+      max: 400,
+      message: '400 chars max'
+    }, {
+      required: true
+    }],
+    name: "server"
+  }, /*#__PURE__*/React.createElement(input/* default */.Z, {
+    placeholder: "https://"
+  })), /*#__PURE__*/React.createElement(FormItem, {
+    label: "Client ID",
+    key: "frameName",
+    rules: [{
+      required: true
+    }, {
+      max: 130,
+      message: '130 chars max'
+    }],
+    name: "clientId"
+  }, /*#__PURE__*/React.createElement(input/* default */.Z, {
+    placeholder: "client ID"
+  })), /*#__PURE__*/React.createElement(FormItem, {
+    noStyle: true
+  }, /*#__PURE__*/React.createElement(lib_button.default, {
+    type: "primary",
+    htmlType: "submit"
+  }, "Submit"), /*#__PURE__*/React.createElement(lib_button.default, {
+    className: "mg1l",
+    onClick: props.handleCancel
+  }, "Cancel"), /*#__PURE__*/React.createElement(lib_button.default, {
+    className: "mg1l",
+    onClick: props.handleReset
+  }, "Reset"), /*#__PURE__*/React.createElement("p", {
+    className: "mg1t"
+  }, "* You can get your app's client ID and api server in your app's setting and credential pages"), /*#__PURE__*/React.createElement("p", null, "* Make sure you add ", /*#__PURE__*/React.createElement("b", null, "https://ringcentral.github.io/ringcentral-notification-app-developer-tool/auth.html"), " as one your app's Callback Url"))));
+}
+;// CONCATENATED MODULE: ./src/client/components/index/login.jsx
+
+
+
+
+
+
+
+
+
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+
+
+const lsKey = 'rc-platform';
+const lsSettingKey = 'rc-d-setting';
+const {
+  Option
+} = lib_select/* default */.Z;
+class Login extends external_React_.Component {
+  constructor(props) {
+    super(props);
+
+    defineProperty_default()(this, "createSDK", () => {
+      return new window.RingCentral.SDK({
+        server: this.state.server,
+        clientId: this.state.clientId,
+        // clientSecret: 'yourClientSecret',
+        redirectUri: window.rc.redirect // optional, but is required for Implicit Grant and Authorization Code OAuth Flows (see below)
+
+      });
+    });
+
+    defineProperty_default()(this, "init", async () => {
+      this.sdk = this.createSDK();
+      const logined = await this.checkLogin();
+      this.setState({
+        logined
+      });
+    });
+
+    defineProperty_default()(this, "defaultSetting", {
+      server: window.rc.rcServer,
+      clientId: window.rc.clientId
+    });
+
+    defineProperty_default()(this, "getLSsetting", () => {
+      const def = dist_default()(this.defaultSetting);
+      const settings = window.localStorage.getItem(lsSettingKey);
+
+      if (!settings) {
+        return def;
+      }
+
+      try {
+        return Object.assign({}, def, JSON.parse(settings));
+      } catch (e) {
+        console.log('parse setting err', e);
+        return def;
+      }
+    });
+
+    defineProperty_default()(this, "cancelSetting", () => {
+      this.setState({
+        showSetting: false
+      });
+    });
+
+    defineProperty_default()(this, "resetSetting", () => {
+      window.localStorage.setItem(lsSettingKey, JSON.stringify(this.defaultSetting));
+      this.setState(dist_default()(this.defaultSetting), this.updateSDK);
+    });
+
+    defineProperty_default()(this, "submitSetting", res => {
+      window.localStorage.setItem(lsSettingKey, JSON.stringify(res));
+      this.setState(_objectSpread(_objectSpread({}, res), {}, {
+        showSetting: false
+      }), this.updateSDK);
+    });
+
+    defineProperty_default()(this, "updateSDK", () => {
+      window.localStorage.removeItem(lsKey);
+      this.sdk = this.createSDK();
+      this.setState({
+        logined: false
+      });
+    });
+
+    defineProperty_default()(this, "handleOpenSetting", () => {
+      this.setState({
+        showSetting: true
+      });
+    });
+
+    defineProperty_default()(this, "checkLogin", () => {
+      let token = window.localStorage.getItem(lsKey);
+
+      if (!token) {
+        return false;
+      }
+
+      try {
+        token = JSON.parse(token);
+      } catch (e) {
+        console.error('token parse failed', token);
+        return false;
+      }
+
+      this.sdk.platform().auth().setData(token);
+      return this.sdk.platform().auth().accessTokenValid();
+    });
+
+    defineProperty_default()(this, "login", () => {
+      const loginUrl = this.sdk.loginUrl();
+      this.sdk.loginWindow({
+        url: loginUrl
+      }).then(loginOptions => {
+        return this.sdk.login(loginOptions);
+      }).then(this.afterLogin).catch(this.loginError);
+    });
+
+    defineProperty_default()(this, "loginError", err => {
+      this.setState({
+        loading: false
+      });
+      console.error(err);
+
+      notification.default.error({
+        title: 'login failed',
+        description: err.message
+      });
+    });
+
+    defineProperty_default()(this, "afterLogin", () => {
+      this.setState({
+        logined: true
+      });
+      this.openTeamSelect();
+    });
+
+    defineProperty_default()(this, "handleLogout", () => {
+      this.sdk.logout().then(() => {
+        this.setState({
+          logined: false
+        });
+      });
+    });
+
+    defineProperty_default()(this, "getTeams", () => {
+      return this.sdk.send({
+        method: 'GET',
+        url: '/restapi/v1.0/glip/groups',
+        query: {
+          type: 'Team',
+          recordCount: 250
+        }
+      }).then(function (apiResponse) {
+        return apiResponse.json();
+      }).then(function (json) {
+        return json.records;
+      }).catch(function (e) {
+        if (e.response || e.request) {
+          const request = e.request;
+          const response = e.response;
+          console.log('API error ' + e.message + ' for URL' + request.url + ' ' + this.sdk.error(response));
+        }
+
+        this.setState({
+          loading: false
+        });
+
+        notification.default.error({
+          title: 'fetch teams data failed',
+          description: e.message
+        });
+      });
+    });
+
+    defineProperty_default()(this, "handleSelect", async id => {
+      this.setState({
+        showTeamSelect: false
+      });
+      const url = `/restapi/v1.0/glip/groups/${id}/webhooks`;
+      const uri = await this.sdk.send({
+        method: 'POST',
+        url
+      }).then(function (apiResponse) {
+        return apiResponse.json();
+      }).then(function (json) {
+        return json.uri;
+      }).catch(function (e) {
+        if (e.response || e.request) {
+          const request = e.request;
+          const response = e.response;
+          console.log('API error ' + e.message + ' for URL' + request.url + ' ' + this.sdk.error(response));
+        }
+
+        this.setState({
+          loading: false
+        });
+
+        notification.default.error({
+          title: 'create webhook uri failed',
+          description: e.message
+        });
+      });
+
+      if (!uri) {
+        return false;
+      }
+
+      this.setState({
+        loading: false
+      });
+      this.props.setWebhook(uri);
+    });
+
+    defineProperty_default()(this, "openTeamSelect", async () => {
+      const teams = await this.getTeams();
+      console.log('teams', teams);
+
+      if (!teams) {
+        return false;
+      }
+
+      this.setState({
+        teams,
+        showTeamSelect: true
+      });
+    });
+
+    defineProperty_default()(this, "handleClick", async () => {
+      this.setState({
+        loading: true
+      });
+      const logined = await this.checkLogin();
+
+      if (!logined) {
+        this.login();
+      } else {
+        this.openTeamSelect();
+      }
+    });
+
+    this.state = _objectSpread({
+      loading: false,
+      logined: false,
+      teams: [],
+      showTeamSelect: false,
+      showSetting: false
+    }, this.getLSsetting());
+  }
+
+  componentDidMount() {
+    this.init();
+  }
+
+  renderModal() {
+    const oprops = {
+      visible: this.state.showTeamSelect,
+      footer: null,
+      onCancel: () => null,
+      closable: false
+    };
+    const sprops = {
+      className: 'team-select',
+      placeholder: 'Please select a team',
+      onSelect: this.handleSelect,
+      showSearch: true,
+      optionFilterProp: 'children',
+      filterOption: (input, option) => {
+        return option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      }
+    };
+    return /*#__PURE__*/React.createElement(modal/* default */.Z, oprops, /*#__PURE__*/React.createElement(lib_select/* default */.Z, sprops, this.state.teams.map(t => {
+      return /*#__PURE__*/React.createElement(Option, {
+        value: t.id,
+        key: t.id
+      }, t.name);
+    })));
+  }
+
+  renderLogout() {
+    if (!this.state.logined) {
+      return null;
+    }
+
+    return /*#__PURE__*/React.createElement("span", {
+      className: "common-link mg3l",
+      onClick: this.handleLogout
+    }, "Logout");
+  }
+
+  renderSetting() {
+    const props = {
+      setting: {
+        clientId: this.state.clientId,
+        server: this.state.server
+      },
+      handleCancel: this.cancelSetting,
+      handleReset: this.resetSetting,
+      onSubmit: this.submitSetting,
+      visible: this.state.showSetting
+    };
+    return /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement(icons_SettingOutlined, {
+      className: "common-link mg1l",
+      onClick: this.handleOpenSetting
+    }), /*#__PURE__*/React.createElement(Setting, props));
+  }
+
+  render() {
+    return /*#__PURE__*/React.createElement("span", {
+      className: "mg1l"
+    }, /*#__PURE__*/React.createElement(tooltip.default, {
+      title: "After login you can select team and get a webhook url that can be used to test webhook"
+    }, /*#__PURE__*/React.createElement(lib_button.default, {
+      onClick: this.handleClick,
+      className: "mg1l",
+      loading: this.state.loading
+    }, "Get a webhookUrl")), this.renderSetting(), this.renderLogout(), this.renderModal());
+  }
+
+}
+;// CONCATENATED MODULE: ./node_modules/@ant-design/icons-svg/es/asn/QuestionCircleOutlined.js
+// This icon file is generated automatically.
+var QuestionCircleOutlined = {
+  "icon": {
+    "tag": "svg",
+    "attrs": {
+      "viewBox": "64 64 896 896",
+      "focusable": "false"
+    },
+    "children": [{
+      "tag": "path",
+      "attrs": {
+        "d": "M512 64C264.6 64 64 264.6 64 512s200.6 448 448 448 448-200.6 448-448S759.4 64 512 64zm0 820c-205.4 0-372-166.6-372-372s166.6-372 372-372 372 166.6 372 372-166.6 372-372 372z"
+      }
+    }, {
+      "tag": "path",
+      "attrs": {
+        "d": "M623.6 316.7C593.6 290.4 554 276 512 276s-81.6 14.5-111.6 40.7C369.2 344 352 380.7 352 420v7.6c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V420c0-44.1 43.1-80 96-80s96 35.9 96 80c0 31.1-22 59.6-56.1 72.7-21.2 8.1-39.2 22.3-52.1 40.9-13.1 19-19.9 41.8-19.9 64.9V620c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8v-22.7a48.3 48.3 0 0130.9-44.8c59-22.7 97.1-74.7 97.1-132.5.1-39.3-17.1-76-48.3-103.3zM472 732a40 40 0 1080 0 40 40 0 10-80 0z"
+      }
+    }]
+  },
+  "name": "question-circle",
+  "theme": "outlined"
+};
+/* harmony default export */ const asn_QuestionCircleOutlined = (QuestionCircleOutlined);
 ;// CONCATENATED MODULE: ./node_modules/@ant-design/icons/es/icons/QuestionCircleOutlined.js
 // GENERATE BY ./scripts/generate.ts
 // DON NOT EDIT IT MANUALLY
@@ -36350,16 +36594,16 @@ QuestionCircleOutlined_QuestionCircleOutlined.displayName = 'QuestionCircleOutli
 
 
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function index_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-
+function index_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { index_ownKeys(Object(source), true).forEach(function (key) { defineProperty_default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { index_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 
 
 
-const FormItem = lib_form/* default.Item */.Z.Item;
+
+
+const index_FormItem = lib_form/* default.Item */.Z.Item;
 const postMessage = new PostMessageManager({
   debug: true
 });
@@ -36396,7 +36640,7 @@ function App() {
 
   function setState(ext) {
     setter(old => {
-      const up = _objectSpread(_objectSpread({}, old), ext);
+      const up = index_objectSpread(index_objectSpread({}, old), ext);
 
       if ('appUrl' in ext) {
         updateUrl(up);
@@ -36476,7 +36720,7 @@ function App() {
     name: "app-form",
     onFinish: handleFinish,
     initialValues: state
-  }, /*#__PURE__*/React.createElement(FormItem, {
+  }, /*#__PURE__*/React.createElement(index_FormItem, {
     label: "App Url",
     key: "appUrl",
     rules: [{
@@ -36486,7 +36730,7 @@ function App() {
     name: "appUrl"
   }, /*#__PURE__*/React.createElement(input/* default */.Z, {
     placeholder: "https://"
-  })), /*#__PURE__*/React.createElement(FormItem, {
+  })), /*#__PURE__*/React.createElement(index_FormItem, {
     label: "Frame Name",
     key: "frameName",
     rules: [{
@@ -36496,7 +36740,7 @@ function App() {
     name: "frameName"
   }, /*#__PURE__*/React.createElement(input/* default */.Z, {
     placeholder: "myApp"
-  })), /*#__PURE__*/React.createElement(FormItem, {
+  })), /*#__PURE__*/React.createElement(index_FormItem, {
     label: "Webhook Url",
     key: "Webhook",
     rules: [{
@@ -36507,7 +36751,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(input/* default */.Z, {
     placeholder: "https://",
     addonAfter: after
-  })), /*#__PURE__*/React.createElement(FormItem, {
+  })), /*#__PURE__*/React.createElement(index_FormItem, {
     noStyle: true
   }, /*#__PURE__*/React.createElement(lib_button.default, {
     type: "primary",
