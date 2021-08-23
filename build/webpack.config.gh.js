@@ -12,7 +12,7 @@ const extractTextPlugin1 = new MiniCssExtractPlugin({
   filename: 'css/[name].styles.bundle.css'
 })
 const {
-  pugIndex
+  pugIndex, authIndex
 } = require('./pug')
 const stylusSettingPlugin = new LoaderOptionsPlugin({
   test: /\.styl$/,
@@ -25,7 +25,8 @@ const config = {
   mode: 'production',
   entry: {
     app: resolve(__dirname, '../src/client/app.js'),
-    index: resolve(__dirname, '../src/server/views/index.pug')
+    index: resolve(__dirname, '../src/server/views/index.pug'),
+    auth: resolve(__dirname, '../src/server/views/auth.pug')
   },
   externals: {
     react: 'React',
@@ -110,6 +111,21 @@ const config = {
             }
           },
           pugIndex
+        ]
+      },
+      {
+        test: /auth\.pug$/,
+        use: [
+          'file-loader?name=auth.html',
+          'concat-loader',
+          'extract-loader',
+          {
+            loader: 'html-loader',
+            options: {
+              attributes: false
+            }
+          },
+          authIndex
         ]
       }
     ]
