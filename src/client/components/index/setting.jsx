@@ -75,7 +75,7 @@ export default function Setting (props) {
             Reset
           </Button>
           <p className='mg1t'>* You can get your app's client ID and api server in your app's setting and credential pages</p>
-          <p>* Make sure you add <b>https://ringcentral.github.io/ringcentral-notification-app-developer-tool/auth.html</b> as one your app's Callback Url</p>
+          <p>* Make sure you add <b>https://ringcentral.github.io/ringcentral-notification-app-developer-tool/auth.html</b> as one of your app's Callback Url</p>
         </FormItem>
       </Form>
     </Modal>
