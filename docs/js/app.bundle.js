@@ -36199,7 +36199,7 @@ function Setting(props) {
     placeholder: "client ID"
   })), /*#__PURE__*/React.createElement(FormItem, {
     noStyle: true
-  }, /*#__PURE__*/React.createElement(lib_button.default, {
+  }, /*#__PURE__*/React.createElement("p", null, /*#__PURE__*/React.createElement(lib_button.default, {
     type: "primary",
     htmlType: "submit"
   }, "Submit"), /*#__PURE__*/React.createElement(lib_button.default, {
@@ -36208,7 +36208,7 @@ function Setting(props) {
   }, "Cancel"), /*#__PURE__*/React.createElement(lib_button.default, {
     className: "mg1l",
     onClick: props.handleReset
-  }, "Reset"), /*#__PURE__*/React.createElement("p", {
+  }, "Reset")), /*#__PURE__*/React.createElement("p", {
     className: "mg1t"
   }, "* You can get your app's client ID and api server in your app's setting and credential pages"), /*#__PURE__*/React.createElement("p", null, "* Make sure you add ", /*#__PURE__*/React.createElement("b", null, "https://ringcentral.github.io/ringcentral-notification-app-developer-tool/auth.html"), " as one of your app's Callback Url"))));
 }

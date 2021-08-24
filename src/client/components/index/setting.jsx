@@ -56,24 +56,26 @@ export default function Setting (props) {
         <FormItem
           noStyle
         >
-          <Button
-            type='primary'
-            htmlType='submit'
-          >
-            Submit
-          </Button>
-          <Button
-            className='mg1l'
-            onClick={props.handleCancel}
-          >
-            Cancel
-          </Button>
-          <Button
-            className='mg1l'
-            onClick={props.handleReset}
-          >
-            Reset
-          </Button>
+          <p>
+            <Button
+              type='primary'
+              htmlType='submit'
+            >
+              Submit
+            </Button>
+            <Button
+              className='mg1l'
+              onClick={props.handleCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              className='mg1l'
+              onClick={props.handleReset}
+            >
+              Reset
+            </Button>
+          </p>
           <p className='mg1t'>* You can get your app's client ID and api server in your app's setting and credential pages</p>
           <p>* Make sure you add <b>https://ringcentral.github.io/ringcentral-notification-app-developer-tool/auth.html</b> as one of your app's Callback Url</p>
         </FormItem>
