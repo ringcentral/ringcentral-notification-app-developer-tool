@@ -3,7 +3,7 @@ import qs from 'query-string'
 import { Form, Input, Button, Tooltip } from 'antd'
 import { PostMessageManager } from 'rc-postmessage'
 import Auth from './login'
-import { QuestionCircleOutlined } from '@ant-design/icons'
+import { QuestionCircleOutlined, GithubFilled } from '@ant-design/icons'
 
 const FormItem = Form.Item
 const postMessage = new PostMessageManager({
@@ -114,7 +114,17 @@ export default function App () {
   )
   return (
     <div className='wrap'>
-      <h1>RingCentral notification app developer tool</h1>
+      <h2>
+        RingCentral notification app developer tool
+        <a
+          href='https://github.com/ringcentral/ringcentral-notification-app-developer-tool'
+          target='_blank'
+          rel='noreferrer'
+          className='mg1l'
+        >
+          <GithubFilled />
+        </a>
+      </h2>
       <div className='iframe-wrap'>
         <iframe
           src={iframeSrc}
@@ -185,6 +195,10 @@ export default function App () {
             <Auth setWebhook={setWebhook} />
           </FormItem>
         </Form>
+      </div>
+      <div className='pd2y'>
+        <h3>About</h3>
+        <p>This app will simulate RingCentral notification running in RingCentral App</p>
       </div>
       <div className='pd2y'>
         <h3>Links</h3>
