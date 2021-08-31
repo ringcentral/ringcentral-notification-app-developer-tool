@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import qs from 'query-string'
 import { Form, Input, Button, Tooltip } from 'antd'
 import { PostMessageManager } from 'rc-postmessage'
@@ -98,9 +98,17 @@ export default function App () {
     })
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      window.particleBg('#pbg', {
+        color: '#777'
+      })
+    }, 100)
+  }, [])
+
   const iframeSrc = buildAppUrl(state)
   const after = (
-    <Tooltip title='You can goto RingCentral app -> Apps -> Incoming Webhook to get a test webhook url or use the "Get webhook url"'>
+    <Tooltip title='You can goto RingCentral app -> Apps -> Incoming Webhook to get a test webhook url or use the "Get webhook url" button'>
       <QuestionCircleOutlined />
     </Tooltip>
   )
@@ -123,7 +131,7 @@ export default function App () {
           </Button>
         </div>
       </div>
-      <div className='pd1y'>
+      <div className='pd2y setting-box'>
         <h3>Settings</h3>
         <Form
           form={form}
@@ -177,6 +185,14 @@ export default function App () {
             <Auth setWebhook={setWebhook} />
           </FormItem>
         </Form>
+      </div>
+      <div className='pd2y'>
+        <h3>Links</h3>
+        <ul>
+          <li>
+            <a href='https://github.com/ringcentral/ringcentral-add-in-framework-js' target='_blank' rel='noreferrer'>ringcentral-add-in-framework-js</a>
+          </li>
+        </ul>
       </div>
     </div>
   )

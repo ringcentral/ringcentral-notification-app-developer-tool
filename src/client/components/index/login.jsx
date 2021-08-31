@@ -3,6 +3,7 @@ import { Button, Tooltip, notification, Modal, Select } from 'antd'
 import copy from 'json-deep-copy'
 import { SettingOutlined } from '@ant-design/icons'
 import Setting from './setting'
+// import test from './test'
 
 const lsKey = 'rc-platform'
 const lsSettingKey = 'rc-d-setting'
@@ -93,6 +94,7 @@ export default class Login extends Component {
   }
 
   handleOpenSetting = () => {
+    // test(this.sdk, this.chatId = '22393823238')
     this.setState({
       showSetting: true
     })
@@ -183,6 +185,7 @@ export default class Login extends Component {
     this.setState({
       showTeamSelect: false
     })
+    this.chatId = id
     const url = `/restapi/v1.0/glip/groups/${id}/webhooks`
     const uri = await this.sdk
       .send({
@@ -327,7 +330,7 @@ export default class Login extends Component {
             className='mg1l'
             loading={this.state.loading}
           >
-            Get a webhookUrl
+            Get a webhook url
           </Button>
         </Tooltip>
         {this.renderSetting()}

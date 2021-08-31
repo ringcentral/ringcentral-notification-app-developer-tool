@@ -8,7 +8,7 @@ import App from './components/index/index.jsx'
 import './css/index.styl'
 
 const renderReactDom = () => {
-  ReactDOM.render(<App />, document.getElementById('container'))
+  ReactDOM.render(<App />, document.getElementById('all'))
 }
 
 if (window.cordova) {

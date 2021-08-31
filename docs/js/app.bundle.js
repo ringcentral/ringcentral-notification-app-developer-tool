@@ -36232,6 +36232,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 
+ // import test from './test'
 
 const lsKey = 'rc-platform';
 const lsSettingKey = 'rc-d-setting';
@@ -36308,6 +36309,7 @@ class Login extends external_React_.Component {
     });
 
     defineProperty_default()(this, "handleOpenSetting", () => {
+      // test(this.sdk, this.chatId = '22393823238')
       this.setState({
         showSetting: true
       });
@@ -36401,6 +36403,7 @@ class Login extends external_React_.Component {
       this.setState({
         showTeamSelect: false
       });
+      this.chatId = id;
       const url = `/restapi/v1.0/glip/groups/${id}/webhooks`;
       const uri = await this.sdk.send({
         method: 'POST',
@@ -36538,7 +36541,7 @@ class Login extends external_React_.Component {
       onClick: this.handleClick,
       className: "mg1l",
       loading: this.state.loading
-    }, "Get a webhookUrl")), this.renderSetting(), this.renderLogout(), this.renderModal());
+    }, "Get a webhook url")), this.renderSetting(), this.renderLogout(), this.renderModal());
   }
 
 }
@@ -36695,9 +36698,16 @@ function App() {
     });
   }
 
+  (0,external_React_.useEffect)(() => {
+    setTimeout(() => {
+      window.particleBg('#pbg', {
+        color: '#777'
+      });
+    }, 100);
+  }, []);
   const iframeSrc = buildAppUrl(state);
   const after = /*#__PURE__*/React.createElement(tooltip.default, {
-    title: "You can goto RingCentral app -> Apps -> Incoming Webhook to get a test webhook url or use the \"Get webhook url\""
+    title: "You can goto RingCentral app -> Apps -> Incoming Webhook to get a test webhook url or use the \"Get webhook url\" button"
   }, /*#__PURE__*/React.createElement(icons_QuestionCircleOutlined, null));
   return /*#__PURE__*/React.createElement("div", {
     className: "wrap"
@@ -36714,7 +36724,7 @@ function App() {
     onClick: submit,
     type: "primary"
   }, "Submit"))), /*#__PURE__*/React.createElement("div", {
-    className: "pd1y"
+    className: "pd2y setting-box"
   }, /*#__PURE__*/React.createElement("h3", null, "Settings"), /*#__PURE__*/React.createElement(lib_form/* default */.Z, {
     form: form,
     name: "app-form",
@@ -36758,7 +36768,13 @@ function App() {
     htmlType: "submit"
   }, "Apply"), /*#__PURE__*/React.createElement(Login, {
     setWebhook: setWebhook
-  })))));
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "pd2y"
+  }, /*#__PURE__*/React.createElement("h3", null, "Links"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/ringcentral/ringcentral-add-in-framework-js",
+    target: "_blank",
+    rel: "noreferrer"
+  }, "ringcentral-add-in-framework-js")))));
 }
 ;// CONCATENATED MODULE: ./src/client/app.js
 /**
@@ -36770,7 +36786,7 @@ function App() {
 
 
 const renderReactDom = () => {
-  external_ReactDOM_default().render( /*#__PURE__*/external_React_default().createElement(App, null), document.getElementById('container'));
+  external_ReactDOM_default().render( /*#__PURE__*/external_React_default().createElement(App, null), document.getElementById('all'));
 };
 
 if (window.cordova) {
