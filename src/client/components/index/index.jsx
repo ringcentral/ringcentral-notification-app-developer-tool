@@ -115,7 +115,7 @@ export default function App () {
   return (
     <div className='wrap'>
       <h2>
-        RingCentral notification app developer tool
+        RingCentral add-in developer tool
         <a
           href='https://github.com/ringcentral/ringcentral-notification-app-developer-tool'
           target='_blank'
@@ -198,7 +198,7 @@ export default function App () {
       </div>
       <div className='pd2y'>
         <h3>About</h3>
-        <p>This app will simulate RingCentral notification running in RingCentral App</p>
+        <p>This app will simulate RingCentral add-in running in RingCentral App</p>
       </div>
       <div className='pd2y'>
         <h3>Links</h3>
