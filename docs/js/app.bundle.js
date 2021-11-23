@@ -36747,7 +36747,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(icons_QuestionCircleOutlined, null));
   return /*#__PURE__*/React.createElement("div", {
     className: "wrap"
-  }, /*#__PURE__*/React.createElement("h2", null, "RingCentral notification app developer tool", /*#__PURE__*/React.createElement("a", {
+  }, /*#__PURE__*/React.createElement("h2", null, "RingCentral add-in developer tool", /*#__PURE__*/React.createElement("a", {
     href: "https://github.com/ringcentral/ringcentral-notification-app-developer-tool",
     target: "_blank",
     rel: "noreferrer",
@@ -36811,7 +36811,7 @@ function App() {
     setWebhook: setWebhook
   })))), /*#__PURE__*/React.createElement("div", {
     className: "pd2y"
-  }, /*#__PURE__*/React.createElement("h3", null, "About"), /*#__PURE__*/React.createElement("p", null, "This app will simulate RingCentral notification running in RingCentral App")), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("h3", null, "About"), /*#__PURE__*/React.createElement("p", null, "This app will simulate RingCentral add-in running in RingCentral App")), /*#__PURE__*/React.createElement("div", {
     className: "pd2y"
   }, /*#__PURE__*/React.createElement("h3", null, "Links"), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
     href: "https://github.com/ringcentral/ringcentral-add-in-framework-js",
